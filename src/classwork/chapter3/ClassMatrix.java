@@ -1,6 +1,6 @@
-package classwork.chapter2;
+package classwork.chapter3;
 
-public class classMatrix {
+public class ClassMatrix {
     public static void main(String[] args) {
         double m[][] = {
                 {0 * 0, 1 * 0, 2 * 0, 3 * 0},
@@ -16,3 +16,4 @@ public class classMatrix {
         }
     }
 }
+

@@ -1,4 +1,4 @@
-package classwork.chapter2;
+package classwork.chapter3;
 
 public class ThreeDMatrix {
     public static void main(String[] args) {
@@ -17,6 +17,5 @@ public class ThreeDMatrix {
             }
             System.out.println();
         }
-        }
     }
-
+}
