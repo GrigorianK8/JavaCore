@@ -1,4 +1,5 @@
 package classwork.chapter4;
+
 //Demonstrate the use of logical operations
 public class BoolLogic {
     public static void main(String[] args) {
