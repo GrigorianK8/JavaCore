@@ -14,8 +14,9 @@ public class ArrayUtil {
             System.out.print(i + " ");
         }
         System.out.println();
+
+        int minValue = numbers[0];
         for (int i = 0; i < numbers.length; i++) {
-            int minValue = numbers[0];
             if (minValue > numbers[i]) {
                 minValue = numbers[i];
                 System.out.println(minValue);
@@ -23,7 +24,7 @@ public class ArrayUtil {
         }
         int middleIndex = numbers.length / 2;
         if (numbers.length / 2 == 1) {
-            System.out.println("Middle of the array " + numbers[middleIndex]);
+            System.out.println("Middle of the array " + middleIndex);
         } else {
             System.out.println("Middle of the array " + numbers[middleIndex - 1] + ", " + numbers[middleIndex]);
         }
