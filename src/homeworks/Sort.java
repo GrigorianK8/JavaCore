@@ -9,7 +9,7 @@ public class Sort {
         while (!sorted) {
             sorted = true;
 
-            for (int i = 0; i < array.length; i++) {
+            for (int i = 0; i < array.length - 1; i++) {
                 if (array[i] > array[i + 1]) {
                     t = array[i];
                     array[i] = array[i + 1];
