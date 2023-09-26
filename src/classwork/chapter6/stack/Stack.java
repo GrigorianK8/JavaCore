@@ -5,6 +5,7 @@ public class Stack {
     int tos;
 
     Stack() {
+
         tos = -1;
     }
 

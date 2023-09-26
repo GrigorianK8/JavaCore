@@ -10,7 +10,7 @@ public class BraceChecker {
         this.text = text;
     }
 
-    public boolean check() {
+    public void check() {
         Stack stack = new Stack<Character>();
         int tos = -1;
         if (tos == stack.size()) {
@@ -48,7 +48,6 @@ public class BraceChecker {
                             text.charAt(i) + " " + text.indexOf(check));
             }
         }
-        return (stack.isEmpty());
     }
 
     public void extend() {
