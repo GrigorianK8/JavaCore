@@ -1,26 +1,30 @@
 package classwork.chapter6.stack;
 
 public class Stack {
-    int[] stck = new int[10];
-    int tos;
+    private int[] stck = new int[10];
+    private int index;
 
-    Stack() {
+    public Stack() {
 
-        tos = -1;
+        index = -1;
     }
 
-    void push(int item) {
-        if (tos == 9)
+    public void push(int item) {
+        if (index == 9)
             System.out.println("The stack is full.");
         else
-            stck[++tos] = item;
+            stck[++index] = item;
     }
 
-    int pop() {
-        if (tos < 0) {
+    public int pop(int item) {
+        if (index < 0) {
             System.out.println("The stack is not loaded.");
             return 0;
-        } else
-            return stck[tos--];
+        } else {
+            return stck[index--];
+        }
+    }
+    public int getIndex() {
+        return index;
     }
 }
