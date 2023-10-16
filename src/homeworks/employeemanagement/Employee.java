@@ -6,21 +6,22 @@ public class Employee {
     private String name;
     private String surname;
     private String phone;
-    private Company company;
     private double salary;
     private String position;
+    private Company company;
 
-    public Employee() {
-    }
 
-    public Employee(String id, String name, String surname, String phone, Company company, double salary, String position) {
+    public Employee(String id, String name, String surname, String phone, double salary, String position, Company company) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.phone = phone;
-        this.company = company;
         this.salary = salary;
         this.position = position;
+        this.company = company;
+    }
+
+    public Employee() {
     }
 
     public String getId() {
@@ -55,14 +56,6 @@ public class Employee {
         this.phone = phone;
     }
 
-    public Company getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
-    }
-
     public double getSalary() {
         return salary;
     }
@@ -79,6 +72,14 @@ public class Employee {
         this.position = position;
     }
 
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
@@ -86,9 +87,9 @@ public class Employee {
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", phone='" + phone + '\'' +
-                ", company=" + company +
                 ", salary=" + salary +
                 ", position='" + position + '\'' +
+                ", company=" + company +
                 '}';
     }
 }

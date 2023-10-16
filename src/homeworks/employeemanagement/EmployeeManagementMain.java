@@ -129,7 +129,6 @@ public class EmployeeManagementMain {
             return;
         }
         employeeStorage.searchEmployeesByCompany(companyFromStorage);
-        System.out.println();
         System.out.println("Please input employee by id");
         String employeeId = scanner.next();
         Employee employeeFromStorage = employeeStorage.getById(employeeId);
@@ -192,7 +191,7 @@ public class EmployeeManagementMain {
         String employeePosition = scanner.nextLine();
         System.out.println("Please input employee salary AMD");
         double employeeSalary = Double.parseDouble(scanner.nextLine());
-        Employee employee = new Employee(employeeId, employeeName, employeeSurname, employeePhone, companyFromStorage, employeeSalary, employeePosition);
+        Employee employee = new Employee(employeeId, employeeName, employeeSurname, employeePhone,  employeeSalary, employeePosition, companyFromStorage);
         employeeStorage.add(employee);
         System.out.println("Employee registered!");
     }
