@@ -4,25 +4,14 @@ import homeworks.medicalCenter.model.Person;
 
 public class Doctor extends Person {
 
-    private String doctorId;
     private String profession;
 
-    public Doctor(String name, String surName, String email, String phoneNumber, String doctorId, String profession) {
-        super(name, surName, email, phoneNumber);
-        this.doctorId = doctorId;
+    public Doctor(String id, String name, String surname, String email, String phoneNumber, String profession) {
+        super(id, name, surname, email, phoneNumber);
         this.profession = profession;
     }
 
     public Doctor() {
-    }
-
-
-    public String getDoctorId() {
-        return doctorId;
-    }
-
-    public void setDoctorId(String doctorId) {
-        this.doctorId = doctorId;
     }
 
     public String getProfession() {
@@ -36,8 +25,12 @@ public class Doctor extends Person {
     @Override
     public String toString() {
         return "Doctor{" +
-                "doctorId='" + doctorId + '\'' +
                 ", profession='" + profession + '\'' +
+                ", id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
     }
 }

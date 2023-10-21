@@ -1,51 +1,57 @@
 package homeworks.medicalCenter.model;
 
+import java.util.Date;
+
 public class Patient extends Person {
+    protected Doctor doctor;
+    protected Date registerDateTime;
+    protected Date appointmentDateTime;
 
-    private String patientId;
-    private String doctor;
-    private String registerDateTime;
-
-    public Patient(String name, String surName, String email, String phoneNumber, String patientId, String doctor, String registerDateTime, Patient patientFromStorage) {
-        super(name, surName, email, phoneNumber);
-        this.patientId = patientId;
+    public Patient(String id, String name, String surname, String email, String phoneNumber, Doctor doctor, Date registerDateTime, Date appointmentDateTime) {
+        super(id, name, surname, email, phoneNumber);
         this.doctor = doctor;
         this.registerDateTime = registerDateTime;
+        this.appointmentDateTime = appointmentDateTime;
     }
 
     public Patient() {
     }
 
-    public String getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
-    }
-
-    public String getDoctor() {
+    public Doctor getDoctor() {
         return doctor;
     }
 
-    public void setDoctor(String doctor) {
+    public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
     }
 
-    public String getRegisterDateTime() {
+    public Date getRegisterDateTime() {
         return registerDateTime;
     }
 
-    public void setRegisterDateTime(String registerDateTime) {
+    public void setRegisterDateTime(Date registerDateTime) {
         this.registerDateTime = registerDateTime;
+    }
+
+    public Date getAppointmentDateTime() {
+        return appointmentDateTime;
+    }
+
+    public void setAppointmentDateTime(Date appointmentDateTime) {
+        this.appointmentDateTime = appointmentDateTime;
     }
 
     @Override
     public String toString() {
         return "Patient{" +
-                "patientId='" + patientId + '\'' +
-                ", doctor='" + doctor + '\'' +
-                ", registerDateTime='" + registerDateTime + '\'' +
+                "doctor=" + doctor +
+                ", registerDateTime=" + registerDateTime +
+                ", appointmentDateTime=" + appointmentDateTime +
+                ", id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
     }
 }
