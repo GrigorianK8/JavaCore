@@ -1,7 +1,9 @@
 package homeworks.medicalCenter;
 
+import homeworks.medicalCenter.exception.PersonNotFoundException;
 import homeworks.medicalCenter.model.Doctor;
 import homeworks.medicalCenter.model.Patient;
+import homeworks.medicalCenter.storage.PersonStorage;
 import homeworks.medicalCenter.util.DateUtil;
 
 import java.text.ParseException;
@@ -61,7 +63,12 @@ public class MedicalCenterMain implements Command {
         System.out.println("Please choose doctor ID.");
         personStorage.printDoctors();
         String doctorId = scanner.nextLine();
-        Doctor doctorById = personStorage.getDoctorById(doctorId);
+        Doctor doctorById = null;
+        try {
+            doctorById = personStorage.getDoctorById(doctorId);
+        } catch (PersonNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
         if (doctorById != null) {
             personStorage.printAllPatientsByDoctor(doctorById);
         } else {
@@ -73,7 +80,12 @@ public class MedicalCenterMain implements Command {
         System.out.println("Please choose doctor id.");
         personStorage.printDoctors();
         String doctorId = scanner.next();
-        Doctor doctorById = personStorage.getDoctorById(doctorId);
+        Doctor doctorById = null;
+        try {
+            doctorById = personStorage.getDoctorById(doctorId);
+        } catch (PersonNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
         if (doctorId != null) {
             System.out.println("Please input id, Name, Surname, Email, Phone number, Doctor, Register date time(dd-MM-yyyy HH:mm)");
             String patientDataStr = scanner.nextLine();
@@ -105,7 +117,12 @@ public class MedicalCenterMain implements Command {
         System.out.println("Please choose doctor ID.");
         personStorage.printDoctors();
         String doctorId = scanner.nextLine();
-        Doctor doctorById = personStorage.getDoctorById(doctorId);
+        Doctor doctorById = null;
+        try {
+            doctorById = personStorage.getDoctorById(doctorId);
+        } catch (PersonNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
         if (doctorById != null) {
             System.out.println("Please input Name, Surname, Email, Phone number, Profession");
             String doctorDataStr = scanner.nextLine();
@@ -127,7 +144,12 @@ public class MedicalCenterMain implements Command {
         System.out.println("Please choose doctor ID.");
         personStorage.printDoctors();
         String doctorId = scanner.nextLine();
-        Doctor doctorById = personStorage.getDoctorById(doctorId);
+        Doctor doctorById = null;
+        try {
+            doctorById = personStorage.getDoctorById(doctorId);
+        } catch (PersonNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
         if (doctorById != null) {
             personStorage.deleteDoctorById(doctorId);
             System.out.println("Data deleted from database.");
@@ -147,7 +169,12 @@ public class MedicalCenterMain implements Command {
         String doctorDataStr = scanner.nextLine();
         String[] doctorData = doctorDataStr.split(",");
         String doctorId = doctorData[0];
-        Doctor doctorById = personStorage.getDoctorById(doctorId);
+        Doctor doctorById = null;
+        try {
+            doctorById = personStorage.getDoctorById(doctorId);
+        } catch (PersonNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
         if (doctorById == null) {
             Doctor doctor = new Doctor();
             doctor.setId(doctorId);
