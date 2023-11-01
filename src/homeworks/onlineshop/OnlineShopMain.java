@@ -18,6 +18,7 @@ public class OnlineShopMain implements Command {
 
     private static Scanner scanner = new Scanner(System.in);
     private static OrderStorage orderStorage = new OrderStorage();
+    private static Date orderDate = new Date();
     private static ProductStorage productStorage = new ProductStorage();
     private static UserStorage userStorage = new UserStorage();
     private static User currentUser = null;
@@ -36,7 +37,7 @@ public class OnlineShopMain implements Command {
                     try {
                         login();
                     } catch (LoginFailedException e) {
-                        throw new RuntimeException(e);
+                        System.out.println("Login Failed!");
                     }
                     break;
                 case REGISTER:
@@ -56,6 +57,7 @@ public class OnlineShopMain implements Command {
             switch (command) {
                 case LOGOUT:
                     isRun = false;
+                    currentUser = null;
                     break;
                 case PRINT_ALL_PRODUCTS:
                     printAllProducts();
@@ -87,7 +89,7 @@ public class OnlineShopMain implements Command {
             Order orderToCancel = orderStorage.getOrderById(orderId);
             if (orderToCancel.getUser().getId().equals(currentUser.getId())) {
                 if (orderToCancel.getOrderType() == OrderType.NEW) {
-                    orderStorage.removeOrderById(orderId); // Remove the order from the storage
+                    orderStorage.removeOrderById(orderId);
                     System.out.println("Order with ID " + orderId + " has been canceled.");
                 } else {
                     System.out.println("You can only cancel orders in the NEW status.");
@@ -133,7 +135,7 @@ public class OnlineShopMain implements Command {
                 System.out.println("Sorry, the product is out of stock.");
             } else {
                 User currentUser = getCurrentUser();
-                Order newOrder = new Order(UUID.randomUUID().toString(), currentUser, product, new Date().toString(), totalPrice, quantity, OrderType.NEW);
+                Order newOrder = new Order(UUID.randomUUID().toString(), currentUser, product, orderDate, totalPrice, quantity, OrderType.NEW);
                 orderStorage.addOrder(newOrder);
                 System.out.println("Order placed successfully!");
             }
@@ -181,10 +183,11 @@ public class OnlineShopMain implements Command {
 
     private static void changeOrdersStatus() throws NotFoundException {
         System.out.print("Enter the order ID to change its status: ");
+        System.out.println("---------------------------------------");
         String orderId = scanner.nextLine();
         Order order = orderStorage.getOrderById(orderId);
         if (order != null) {
-            System.out.print("Enter the new status (0 for NEW, 1 for DELIVERED, 2 for CANCELED): ");
+            System.out.print("Enter the new status (0 - for NEW, 1 - for DELIVERED, 2 - for CANCELED): ");
             int newStatusChoice = Integer.parseInt(scanner.nextLine());
             if (newStatusChoice == 1) {
                 if (order.getOrderType() == OrderType.DELIVERED) {
@@ -207,7 +210,6 @@ public class OnlineShopMain implements Command {
         }
     }
 
-
     private static void printOrders() {
         orderStorage.printOrders();
     }
@@ -222,6 +224,7 @@ public class OnlineShopMain implements Command {
 
     private static void addProduct() throws ParseException {
         System.out.println("Adding a New Product.");
+        System.out.println("----------------------");
         System.out.println("Please provide the following product information:");
         System.out.println("Product ID: ");
         String id = scanner.nextLine();
@@ -229,17 +232,25 @@ public class OnlineShopMain implements Command {
         String name = scanner.nextLine();
         System.out.println("Description: ");
         String description = scanner.nextLine();
+        double price;
+        int stockQty;
         System.out.println("Price: ");
-        double price = Double.parseDouble(scanner.nextLine());
+        price = Double.parseDouble(scanner.nextLine());
         System.out.println("Stock Quantity: ");
-        int stockQty = Integer.parseInt(scanner.nextLine());
+        stockQty = Integer.parseInt(scanner.nextLine());
         System.out.println("Select Product Type:");
         System.out.println("0 - ELECTRONICS");
         System.out.println("1 - CLOTHING");
         System.out.println("2 - BOOKS");
         int productTypeChoice = Integer.parseInt(scanner.nextLine());
-        ProductType productType = ProductType.values()[productTypeChoice];
-        Product newProduct = new Product(id, name, description, price, stockQty, productType);
+        ProductType productType;
+        if (productTypeChoice >= 0 && productTypeChoice < ProductType.values().length) {
+            productType = ProductType.values()[productTypeChoice];
+        } else {
+            System.out.println("Invalid product type choice.");
+            return;
+        }
+        Product newProduct = new Product(name, description, price, stockQty, productType);
         productStorage.addProduct(newProduct);
         System.out.println(" System.out.println(Product added successfully!");
     }
@@ -274,21 +285,22 @@ public class OnlineShopMain implements Command {
         User currentUser = userStorage.getUserByEmailAndPassword(email, password);
         if (currentUser != null) {
             System.out.println("Login successful. Welcome, " + currentUser.getName() + "!");
-            System.out.println("Please choose your user type (0 for USER, 1 for ADMIN):");
-            int userTypeChoice = Integer.parseInt(scanner.nextLine());
-            UserType userType = (userTypeChoice == 1) ? UserType.ADMIN : UserType.USER;
-            if (userType == UserType.ADMIN) {
-                adminCommands();
-            } else {
-                userCommands();
-            }
         } else {
             throw new LoginFailedException("Invalid email or password. Login failed.");
+        }
+        System.out.println("Please choose your user type (0 - for USER, 1 - for ADMIN):");
+        int userTypeChoice = Integer.parseInt(scanner.nextLine());
+        UserType userType = (userTypeChoice == 1) ? UserType.ADMIN : UserType.USER;
+        if (userType == UserType.ADMIN) {
+            adminCommands();
+        } else {
+            userCommands();
         }
     }
 
     private static void register() {
         System.out.println("Welcome to user registration. Please provide the following information.");
+        System.out.println("-----------------------------------------------------------------------");
         System.out.println("Please input user id: ");
         String id = scanner.nextLine();
         System.out.println("Please input user name: ");
@@ -314,6 +326,7 @@ public class OnlineShopMain implements Command {
             return;
         }
         User newUser = new User(id, name, email, password);
+        newUser.setUser(currentUser);
         userStorage.addUser(newUser);
         System.out.println("Registration successful. Welcome, " + newUser.getName() + "!");
     }

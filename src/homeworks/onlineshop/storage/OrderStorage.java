@@ -19,18 +19,18 @@ public class OrderStorage {
 
     public void printOrders() {
         if (size == 0) {
-            System.out.println("No orders found.");
+            System.out.println("No orders found!");
             return;
         }
-        System.out.println("All Orders:");
         for (int i = 0; i < size; i++) {
             Order order = orders[i];
+            System.out.println("All Orders --------------------");
             System.out.println("Order ID: " + order.getId());
             System.out.println("User: " + order.getUser().getName());
             System.out.println("Product: " + order.getProduct().getName());
             System.out.println("Quantity: " + order.getQty());
             System.out.println("Order Status: " + order.getOrderType());
-            System.out.println("--------------------");
+            System.out.println("---------------------------");
         }
     }
 

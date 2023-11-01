@@ -8,13 +8,18 @@ public class UserStorage {
     private int size;
 
     public void printUsers() {
+        if (size == 0) {
+            System.out.println("No users found!");
+            return;
+        }
         for (int i = 0; i < size; i++) {
             User user = users[i];
+            System.out.println("Users ---------------");
             System.out.println("User ID: " + user.getId());
             System.out.println("User Name: " + user.getName());
             System.out.println("User Email: " + user.getEmail());
             System.out.println("User Type: " + user.getUserType());
-            System.out.println("--------------------");
+            System.out.println("----------------------");
         }
     }
 

@@ -1,5 +1,6 @@
 package homeworks.onlineshop.model;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class Order {
@@ -7,12 +8,12 @@ public class Order {
     private String id;
     private User user;
     private Product product;
-    private String date;
+    private Date date;
     private double price;
     private int qty;
     private OrderType type;
 
-    public Order(String id, User user, Product product, String date, double price, int qty, OrderType type) {
+    public Order(String id, User user, Product product, Date date, double price, int qty, OrderType type) {
         this.id = id;
         this.user = user;
         this.product = product;
@@ -49,11 +50,11 @@ public class Order {
         this.product = product;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

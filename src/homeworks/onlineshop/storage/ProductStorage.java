@@ -10,15 +10,20 @@ public class ProductStorage {
     private int size;
 
     public void printProducts() {
+        if (size == 0) {
+            System.out.println("No products found!");
+            return;
+        }
         for (int i = 0; i < size; i++) {
             Product product = products[i];
+            System.out.println("Products --------------------");
             System.out.println("Product ID: " + product.getId());
             System.out.println("Product Name: " + product.getName());
             System.out.println("Description: " + product.getDescription());
             System.out.println("Price: " + product.getPrice());
             System.out.println("Stock Quantity: " + product.getStockQty());
             System.out.println("Product Type: " + product.getProductType());
-            System.out.println("--------------------");
+            System.out.println("-----------------------------");
         }
     }
 
@@ -38,7 +43,7 @@ public class ProductStorage {
             }
         }
         if (indexToRemove != -1) {
-            deleteByIndex(indexToRemove);
+            removeProductByIndex(indexToRemove);
         } else {
             throw new NotFoundException("Product with ID " + productId + " not found.");
         }
@@ -54,11 +59,14 @@ public class ProductStorage {
         throw new NotFoundException("Product with " + productId + "does not found");
     }
 
-    private void deleteByIndex(int i) {
-        for (int j = i; j < size; j++) {
-            products[j] = products[j + 1];
+    private void removeProductByIndex(int index) {
+        if (index >= 0 && index < size) {
+            for (int i = index; i < size - 1; i++) {
+                products[i] = products[i + 1];
+            }
+            products[size - 1] = null;
+            size--;
         }
-        size--;
     }
 
     private void extend() {
