@@ -41,7 +41,11 @@ public class OnlineShopMain implements Command {
                     }
                     break;
                 case REGISTER:
-                    register();
+                    try {
+                        register();
+                    } catch (Exception e) {
+                        System.out.println("Register failed!");
+                    }
                     break;
                 default:
                     System.out.println("Invalid command. Please, try again.");
