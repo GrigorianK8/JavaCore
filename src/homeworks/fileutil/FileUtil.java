@@ -99,12 +99,12 @@ public class FileUtil {
         }
     }
 
-    public static void printSizeOfPackage() {
+    static void printSizeOfPackage() {
         System.out.print("Input the folder name: ");
         String folderName = scanner.nextLine();
 
         File folder = new File(folderName);
-        double totalSize = calculateFolderSize(folder);
+        long totalSize = calculateFolderSize(folder);
 
         if (totalSize != -1) {
             System.out.println("Total size of " + folder.getName() + " folder: " + formatSize(totalSize));
@@ -113,7 +113,7 @@ public class FileUtil {
         }
     }
 
-    public static void createFileWithContent() {
+    static void createFileWithContent() {
         System.out.print("Input the path to the folder: ");
         String folderPath = scanner.nextLine();
         System.out.print("Input the file name: ");
@@ -164,7 +164,7 @@ public class FileUtil {
         return size;
     }
 
-    private static String formatSize(double size) {
+    private static String formatSize(long size) {
         if (size < 1024) {
             return size + " B";
         } else if (size < 1024 * 1024) {
