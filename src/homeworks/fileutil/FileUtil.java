@@ -9,38 +9,34 @@ public class FileUtil {
 
     public static void main(String[] args) {
 
-//        fileSearch();
-//        contentSearch();
-//        findLines();
-//        printSizeOfPackage();
-//        createFileWithContent();
+        fileSearch();
+        contentSearch();
+        findLines();
+        printSizeOfPackage();
+       createFileWithContent();
     }
 
     static void fileSearch() {
-        try {
-            System.out.print("Input the path of the folder: ");
-            String folderPath = scanner.nextLine();
-            System.out.print("Input the file name to search for: ");
-            String fileName = scanner.nextLine();
+        System.out.print("Input the path of the folder: ");
+        String folderPath = scanner.nextLine();
+        System.out.print("Input the file name to search for: ");
+        String fileName = scanner.nextLine();
 
-            File folder = new File(folderPath);
-            if (folder.exists() && folder.isDirectory()) {
-                File[] files = folder.listFiles();
-                boolean fileFound = false;
-                if (files != null) {
-                    for (File file : files) {
-                        if (file.getName().equals(fileName)) {
-                            fileFound = true;
-                            break;
-                        }
+        File folder = new File(folderPath);
+        if (folder.exists() && folder.isDirectory()) {
+            File[] files = folder.listFiles();
+            boolean fileFound = false;
+            if (files != null) {
+                for (File file : files) {
+                    if (file.getName().equals(fileName)) {
+                        fileFound = true;
+                        break;
                     }
                 }
-                System.out.println("File found: " + fileFound);
-            } else {
-                System.out.println("The folder does not exist or is not a directory!");
             }
-        } catch (NullPointerException e) {
-            System.out.println("The path is invalid!");
+            System.out.println("File found: " + fileFound);
+        } else {
+            System.out.println("The folder does not exist or is not a directory!");
         }
     }
 
