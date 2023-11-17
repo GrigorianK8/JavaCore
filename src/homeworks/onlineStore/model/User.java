@@ -1,24 +1,43 @@
-package homeworks.onlineshop.model;
+package homeworks.onlineStore.model;
 
+import homeworks.onlineStore.model.enums.UserType;
+
+import java.io.Serializable;
 import java.util.Objects;
 
-public class User extends BasicStructure {
+public class User implements Serializable {
 
+    private String id;
+    private String name;
     private String email;
     private String password;
     private UserType userType;
-    private User user;
 
-
-    public User(String id, String name, String email, String password, User user) {
-        super(id, name);
+    public User(String id, String name, String email, UserType userType) {
+        this.id = id;
+        this.name = name;
         this.email = email;
         this.password = password;
         this.userType = userType;
-        this.user = user;
     }
 
-    public User(String id, String name, String email, String password) {
+    public User() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -45,31 +64,15 @@ public class User extends BasicStructure {
         this.userType = userType;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", userType=" + userType +
-                '}';
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
 
         User user = (User) o;
 
+        if (!Objects.equals(id, user.id)) return false;
+        if (!Objects.equals(name, user.name)) return false;
         if (!Objects.equals(email, user.email)) return false;
         if (!Objects.equals(password, user.password)) return false;
         return userType == user.userType;
@@ -77,10 +80,22 @@ public class User extends BasicStructure {
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (userType != null ? userType.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", userType=" + userType +
+                '}';
     }
 }

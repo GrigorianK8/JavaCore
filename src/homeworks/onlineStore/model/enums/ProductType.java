@@ -1,4 +1,4 @@
-package homeworks.onlineshop.model;
+package homeworks.onlineStore.model.enums;
 
 public enum ProductType {
 
