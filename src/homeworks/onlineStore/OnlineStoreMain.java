@@ -19,7 +19,7 @@ import java.util.Scanner;
 
 public class OnlineStoreMain implements Commands {
 
-    private final static Scanner scanner = new Scanner(System.in);
+    private final static Scanner SCANNER = new Scanner(System.in);
     private final static OrderStorage ORDER_STORAGE = StorageSerializeUtil.deserializeOrderStorage();
     private final static ProductStorage PRODUCT_STORAGE = StorageSerializeUtil.deserializeProductStorage();
     private final static UserStorage USER_STORAGE = StorageSerializeUtil.deserializeUserStorage();
@@ -30,7 +30,7 @@ public class OnlineStoreMain implements Commands {
         boolean isRun = true;
         while (isRun) {
             Commands.printMainCommands();
-            String command = scanner.nextLine();
+            String command = SCANNER.nextLine();
             switch (command) {
                 case EXIT:
                     isRun = false;
@@ -49,7 +49,7 @@ public class OnlineStoreMain implements Commands {
 
     private static void register() {
         System.out.println("Please input name,email,password,userType(ADMIN,USER)");
-        String userDataStr = scanner.nextLine();
+        String userDataStr = SCANNER.nextLine();
         String[] userDataArr = userDataStr.split(",");
         User user = USER_STORAGE.getByEmail(userDataArr[1]);
         if (user != null) {
@@ -57,7 +57,7 @@ public class OnlineStoreMain implements Commands {
             return;
         }
         try {
-            user = new User(IdGenerator.generateId(), userDataArr[0], userDataArr[1], UserType.valueOf(userDataArr[3].toUpperCase()));
+            user = new User(IdGenerator.generateId(), userDataArr[0], userDataArr[1], userDataArr[2], UserType.valueOf(userDataArr[3].toUpperCase()));
             USER_STORAGE.add(user);
             System.out.println("User registered!");
         } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
@@ -67,7 +67,7 @@ public class OnlineStoreMain implements Commands {
 
     private static void login() {
         System.out.println("Please input email,password");
-        String loginDataStr = scanner.nextLine();
+        String loginDataStr = SCANNER.nextLine();
         String[] loginDataArr = loginDataStr.split(",");
         User user = USER_STORAGE.getByEmail(loginDataArr[0]);
         if (user == null || !user.getPassword().equals(loginDataArr[1])) {
@@ -80,13 +80,76 @@ public class OnlineStoreMain implements Commands {
         } else if (user.getUserType() == UserType.USER) {
             userCommands();
         }
+
+    }
+
+    private static void changeOrderStatusById() {
+        ORDER_STORAGE.print();
+        System.out.println("Please input order id,new status(NEW,DELIVERED,CANCELED)");
+        String orderDataStr = SCANNER.nextLine();
+        String[] orderDataArr = orderDataStr.split(",");
+        if (orderDataArr.length < 2) {
+            System.out.println("Invalid input format. Please provide order id and new status.");
+            return;
+        }
+        Order order = ORDER_STORAGE.getById(orderDataArr[0]);
+        if (order == null) {
+            System.out.println("Order does not exists");
+            return;
+        }
+        OrderStatus newStatus = OrderStatus.valueOf(orderDataArr[1]);
+        if (order.getOrderStatus() == OrderStatus.NEW
+                && newStatus == OrderStatus.DELIVERED) {
+            if (order.getProduct().getStockQty() < order.getQty()) {
+                System.out.println("You do not have enough product qty");
+                return;
+            }
+            order.getProduct().setStockQty(order.getProduct().getStockQty() - order.getQty());
+            order.setOrderStatus(newStatus);
+            System.out.println("Order status has changed!");
+            StorageSerializeUtil.serializeOrderStorage(ORDER_STORAGE);
+        }
+    }
+
+    private static void removeProductById() {
+        PRODUCT_STORAGE.print();
+        System.out.println("Please input product id");
+        String productId = SCANNER.nextLine();
+        Product product = PRODUCT_STORAGE.getById(productId);
+        if (product == null) {
+            System.out.println("Wrong product Id");
+            return;
+        }
+        product.setRemoved(true);
+        System.out.println("Product removed!");
+        StorageSerializeUtil.serializeProductStorage(PRODUCT_STORAGE);
+    }
+
+    private static void addProduct() {
+        System.out.println("Please input name,description,stockQty,price,productType(ELECTRONICS,CLOTHING,BOOKS)");
+        String productDataStr = SCANNER.nextLine();
+        String[] productDataArr = productDataStr.split(",");
+
+        try {
+            Product product = new Product();
+            product.setId(IdGenerator.generateId());
+            product.setName(productDataArr[0]);
+            product.setDescription(productDataArr[1]);
+            product.setStockQty(Integer.parseInt(productDataArr[2]));
+            product.setPrice(Double.parseDouble(productDataArr[3]));
+            product.setProductType(ProductType.valueOf(productDataArr[4]));
+            PRODUCT_STORAGE.add(product);
+            System.out.println("Product added!");
+        } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
+            System.out.println("Invalid data: " + e.getMessage());
+        }
     }
 
     private static void adminCommands() {
         boolean isRun = true;
         while (isRun) {
             Commands.printAdminCommands();
-            String command = scanner.nextLine();
+            String command = SCANNER.nextLine();
             switch (command) {
                 case LOGOUT:
                     isRun = false;
@@ -116,66 +179,11 @@ public class OnlineStoreMain implements Commands {
         }
     }
 
-    private static void changeOrderStatusById() {
-        ORDER_STORAGE.print();
-        System.out.println("Please input order id,new status(NEW,DELIVERED,CANCELED)");
-        String orderDataStr = scanner.nextLine();
-        String[] orderDataArr = orderDataStr.split(",");
-        Order order = ORDER_STORAGE.getById(orderDataArr[0]);
-        if (order == null) {
-            System.out.println("Order does not exist");
-            return;
-        }
-        OrderStatus newStatus = OrderStatus.valueOf(orderDataArr[1]);
-        if (order.getOrderStatus() == OrderStatus.NEW && newStatus == OrderStatus.DELIVERED) {
-            if (order.getProduct().getStockQty() < order.getQty()) {
-                System.out.println("You do not have enough product qty");
-                return;
-            }
-            order.getProduct().setStockQty(order.getProduct().getStockQty() - order.getQty());
-            order.setOrderStatus(newStatus);
-            System.out.println("Order status has changed!");
-            StorageSerializeUtil.serializeOrderStorage(ORDER_STORAGE);
-        }
-    }
-
-    private static void removeProductById() {
-        PRODUCT_STORAGE.print();
-        System.out.println("Please input product id");
-        String productId = scanner.nextLine();
-        Product product = PRODUCT_STORAGE.getById(productId);
-        if (product == null) {
-            System.out.println("Wrong product id");
-            return;
-        }
-        product.setRemoved(true);
-        StorageSerializeUtil.serializeProductStorage(PRODUCT_STORAGE);
-    }
-
-    private static void addProduct() {
-        System.out.println("Please input name,description,stockQty,price,productType(ELECTRONICS,CLOTHING,BOOKS)");
-        String productDataStr = scanner.nextLine();
-        String[] productDataArr = productDataStr.split(",");
-        try {
-            Product product = new Product();
-            product.setId(IdGenerator.generateId());
-            product.setName(productDataArr[0]);
-            product.setDescription(productDataArr[1]);
-            product.setStockQty(Integer.parseInt(productDataArr[2]));
-            product.setPrice(Double.parseDouble(productDataArr[3]));
-            product.setProductType(ProductType.valueOf(productDataArr[4]));
-            PRODUCT_STORAGE.add(product);
-            System.out.println("Product added!");
-        } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
-            System.out.println("Invalid data: " + e.getMessage());
-        }
-    }
-
     private static void userCommands() {
         boolean isRun = true;
         while (isRun) {
             Commands.printUserCommands();
-            String command = scanner.nextLine();
+            String command = SCANNER.nextLine();
             switch (command) {
                 case LOGOUT:
                     isRun = false;
@@ -194,15 +202,46 @@ public class OnlineStoreMain implements Commands {
                     cancelOrderById();
                     break;
                 default:
-                    System.out.println("Unknown command!");
+                    System.out.println("Unknown Command!");
             }
         }
+    }
+
+    private static void buyProduct() {
+        PRODUCT_STORAGE.print();
+        System.out.println("Please input productId,qty,paymentMethod(CARD,CASH,PAYPAL)");
+        String orderDataStr = SCANNER.nextLine();
+        String[] orderDataArr = orderDataStr.split(",");
+        Product product = PRODUCT_STORAGE.getById(orderDataArr[0]);
+        PaymentMethod paymentMethod = PaymentMethod.valueOf(orderDataArr[2]);
+        if (product == null) {
+            System.out.println("Wrong product Id");
+            return;
+        }
+        int qty = Integer.parseInt(orderDataArr[1]);
+
+        if (product.getStockQty() < qty) {
+            System.out.println("Wrong qty");
+            return;
+        }
+        double price = qty * product.getPrice();
+
+        System.out.println("You want to buy " + product.getName() + " qty: " + qty + " price: " + price + " paymentMethod: " + paymentMethod + " \n Are you sure? (Yes/No)");
+        String answer = SCANNER.nextLine();
+
+        if (!answer.equalsIgnoreCase("yes")) {
+            System.out.println("Order canceled!");
+            return;
+        }
+        Order order = new Order(IdGenerator.generateId(),
+                currentUser, product, qty, new Date(), price, OrderStatus.NEW, paymentMethod);
+        ORDER_STORAGE.add(order);
     }
 
     private static void cancelOrderById() {
         ORDER_STORAGE.printByUser(currentUser);
         System.out.println("Please input order Id");
-        String orderId = scanner.nextLine();
+        String orderId = SCANNER.nextLine();
         Order order = ORDER_STORAGE.getById(orderId);
         if (order == null || !order.getUser().equals(currentUser)) {
             System.out.println("Wrong order id");
@@ -215,33 +254,5 @@ public class OnlineStoreMain implements Commands {
         order.setOrderStatus(OrderStatus.CANCELED);
         System.out.println("Order canceled!");
         StorageSerializeUtil.serializeOrderStorage(ORDER_STORAGE);
-    }
-
-    private static void buyProduct() {
-        PRODUCT_STORAGE.print();
-        System.out.println("Please input productId,qty,paymentMethod(CARD,CASH,PAYPAL)");
-        String orderDataStr = scanner.nextLine();
-        String[] orderDataArr = orderDataStr.split(",");
-        Product product = PRODUCT_STORAGE.getById(orderDataArr[0]);
-        PaymentMethod paymentMethod = PaymentMethod.valueOf(orderDataArr[2]);
-        if (product == null) {
-            System.out.println("Wrong product Id");
-            return;
-        }
-        int qty = Integer.parseInt(orderDataArr[1]);
-        if (product.getStockQty() < qty) {
-            System.out.println("Wrong qty");
-            return;
-        }
-        double price = qty * product.getPrice();
-        System.out.println("You want to buy " + product.getName() + " qty: " + qty + " price: " + price + " paymentMethod: " + paymentMethod + " \n Are you sure? (Yes/No)");
-        String answer = scanner.nextLine();
-        if (!answer.equalsIgnoreCase("yes")) {
-            System.out.println("Order canceled!");
-            return;
-        }
-        Order order = new Order(IdGenerator.generateId(),
-                currentUser, product, qty, new Date(), price, OrderStatus.NEW, paymentMethod);
-        ORDER_STORAGE.add(order);
     }
 }

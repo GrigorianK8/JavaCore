@@ -18,15 +18,15 @@ public class Order implements Serializable {
     private OrderStatus orderStatus;
     private PaymentMethod paymentMethod;
 
-    public Order(String id, User currentUser, Product product, int qty, Date date, double price, OrderStatus aNew, PaymentMethod paymentMethod) {
+    public Order(String id, User user, Product product, int qty, Date date, double price, OrderStatus orderStatus, PaymentMethod paymentMethod) {
         this.id = id;
         this.user = user;
-        this.product = this.product;
-        this.qty = this.qty;
-        this.date = this.date;
-        this.price = this.price;
+        this.product = product;
+        this.qty = qty;
+        this.date = date;
+        this.price = price;
         this.orderStatus = orderStatus;
-        this.paymentMethod = this.paymentMethod;
+        this.paymentMethod = paymentMethod;
     }
 
     public Order() {

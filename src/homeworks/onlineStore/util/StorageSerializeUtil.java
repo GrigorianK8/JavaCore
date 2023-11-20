@@ -8,9 +8,9 @@ import java.io.*;
 
 public abstract class StorageSerializeUtil {
 
-    private static final String USER_FILE_PATH = "C:\\Users\\Grigorian_88\\IdeaProjects\\Java Core\\src\\homeworks\\onlineStore\\data\\orderStorage.txt";
-    private static final String PRODUCT_FILE_PATH = "C:\\Users\\Grigorian_88\\IdeaProjects\\Java Core\\src\\homeworks\\onlineStore\\data\\productStorage.txt";
-    private static final String ORDER_FILE_PATH = "C:\\Users\\Grigorian_88\\IdeaProjects\\Java Core\\src\\homeworks\\onlineStore\\data\\orderStorage.txt";
+    private static final String USER_FILE_PATH = "C:\\Users\\Grigorian_88\\Desktop\\OnlineStoreUtil\\User.txt";
+    private static final String PRODUCT_FILE_PATH = "C:\\Users\\Grigorian_88\\Desktop\\OnlineStoreUtil\\Product.txt";
+    private static final String ORDER_FILE_PATH = "C:\\Users\\Grigorian_88\\Desktop\\OnlineStoreUtil\\Order.txt";
 
     public static void serializeUserStorage(UserStorage userStorage) {
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(USER_FILE_PATH))) {
