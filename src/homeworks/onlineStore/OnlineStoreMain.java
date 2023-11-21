@@ -1,6 +1,7 @@
 package homeworks.onlineStore;
 
 import homeworks.onlineStore.command.Commands;
+import homeworks.onlineStore.exception.OutOfStockException;
 import homeworks.onlineStore.model.Order;
 import homeworks.onlineStore.model.Product;
 import homeworks.onlineStore.model.User;
@@ -13,9 +14,13 @@ import homeworks.onlineStore.storage.ProductStorage;
 import homeworks.onlineStore.storage.UserStorage;
 import homeworks.onlineStore.util.IdGenerator;
 import homeworks.onlineStore.util.StorageSerializeUtil;
+import static homeworks.onlineStore.model.ProductService.validateStockAvailability;
 
 import java.util.Date;
 import java.util.Scanner;
+
+
+
 
 public class OnlineStoreMain implements Commands {
 
@@ -219,7 +224,12 @@ public class OnlineStoreMain implements Commands {
             return;
         }
         int qty = Integer.parseInt(orderDataArr[1]);
-
+        try {
+            validateStockAvailability(product, qty);
+        } catch (OutOfStockException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
         if (product.getStockQty() < qty) {
             System.out.println("Wrong qty");
             return;
