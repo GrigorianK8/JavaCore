@@ -1,6 +1,7 @@
 package homeworks.fileAnalyzer;
 
 import java.util.Map;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class FileAnalyzerMain {
@@ -31,8 +32,13 @@ public class FileAnalyzerMain {
 
         System.out.println("--------------");
 
-        String wordToCount = "The";
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the word to count occurrences: ");
+        String wordToCount = scanner.next();
+
         int occurrences = fileAnalyzer.countWordOccurrences(filePath, wordToCount);
         System.out.println("Number of occurrences of '" + wordToCount + "': " + occurrences);
+
+        scanner.close();
     }
 }
